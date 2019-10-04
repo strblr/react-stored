@@ -1,0 +1,30 @@
+{
+  "name": "react-stored",
+  "version": "1.0.0",
+  "description": "The power of useState, but with persistence across browser sessions, and global access without context",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ostrebler/react-stored.git"
+  },
+  "peerDependencies": {
+    "react": "^16.8.x"
+  },
+  "keywords": [
+    "react",
+    "store",
+    "state",
+    "setState",
+    "localStorage",
+    "stored"
+  ],
+  "author": "ostrebler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ostrebler/react-stored/issues"
+  },
+  "homepage": "https://github.com/ostrebler/react-stored#readme"
+}
