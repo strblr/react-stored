@@ -110,7 +110,5 @@ export const useStore = (key, init, assert) => {
     [schema]
   )
 
-  console.log(value)
-
   return [value.current, globalUpdater]
 }
