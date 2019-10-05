@@ -52,7 +52,7 @@ The second argument to `useStore`, the number `0` in this case, represents the d
 
 ## Reference
 
-### 1. The `useStore` hook
+### 1- The `useStore` hook
 
 This is the cornerstone of this package. It 'connects' you to a specific store slot, identified by key, and returns the value at that location as well as an update function. It's overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all the parts of your UI in sync.
 
@@ -82,7 +82,7 @@ const [state, setState] = useStore('key', 42, assert)
 
 #### The update function
 
-Just like `useState`, the update function can take a value, or a _function_ taking the old store value as an argument and returning the new one.
+Like `useState`, the update function can take a value, or a _function_ taking the old value as an argument and returning the new one.
 
 ```javascript
 const [counter, setCounter] = useStore('counter', 0)
@@ -100,7 +100,30 @@ const setCounter = useStore('counter', 0)[1]
 
 The **identity** of this update function is preserved as long as the identity of `useStore`'s three parameters are preserved.
 
-### The `config` function
+### 2- The `addSchema` function
+
+This configuration function allows you to set _default_- default values and _default_ assert functions to certain keys or key _patterns_ outside of your React tree, typically in `index.js` before your `ReactDOM.render`. If you don't rely on props to set default values and assert functions, you shouldn't set them at component-level and `addSchema` should be **your primary way of configuring store slots**.
+
+It takes the same arguments as `useStore` except the key can be a regexp. If it is, then all keys matching the regexp will use the given configuration.
+
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { addSchema } from 'react-stored'
+import App from './App'
+
+addSchema('counter', 0, counter => counter < 100)
+// Any invocation of 'counter' will now use 0 as its default value, and ensure
+// that any retrieved save is smaller than 100. If not, 0 will be used instead.
+
+addSchema(/app-v\d+/, { currentUser: null })
+// Any invocation of 'app-v1', 'app-v43', 'app-v9987', etc. will use the given
+// object as its default value.
+
+ReactDOM.render(<App/>, document.getElementById('root'))
+```
+
+### 3- The `config` function
 
 With this function, you can configure your stores globally. It has to be called of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
 
