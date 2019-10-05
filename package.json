@@ -42,7 +42,7 @@
   "babel": {
     "presets": [
       "minify",
-      "@babel/preset-env",
+  
       "@babel/preset-react"
     ],
     "comments": false
