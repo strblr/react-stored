@@ -61,7 +61,7 @@ export const useStore = (key, init, assert) => {
   const schema = useMemo(
     () => ({
       key,
-      init: init || (storeSchema && storeSchema.init),
+      init: init === undefined ? storeSchema && storeSchema.init : init,
       assert: assert || (storeSchema && storeSchema.assert)
     }),
     [key, init, assert, storeSchema]
