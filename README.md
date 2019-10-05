@@ -94,7 +94,7 @@ const setCounter = useStore('counter', 0)[1]
 </button>
 ```
 
-The **identity** of this update function is preserved as long as the identity of `useStore`'s parameters are preserved.
+The **identity** of this update function is preserved as long as the identity of `useStore`'s three parameters are preserved.
 
 #### The `config` function
 
