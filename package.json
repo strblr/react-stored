@@ -1,7 +1,7 @@
 {
   "name": "react-stored",
   "version": "1.0.2",
-  "description": "The power and simplicity of useState, but with persistence across browser sessions, global access without context, speed and memory optimisation, anti-ill form checks, and other cool stuff.",
+  "description": "The power and simplicity of useState, but with persistence across browser sessions, global sync'd access without context, speed and memory optimisation, anti-ill form checks, and other cool stuff.",
   "main": "index.js",
   "scripts": {
     "push": "git add . && git commit -m 'mini update' && git push -u origin master"
