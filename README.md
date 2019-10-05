@@ -11,7 +11,8 @@ Ever dreamed of such of feature but couldn't come up with a 100% clean and satis
 4. with **persistence** across page reloads, tabs, sessions,
 5. with **configurable safety asserts** on deserialization and **default fallbacks**,
 6. with **no unnecessary** rerender, ever,
-7. with **simplicity** and **cool configuration** options.
+7. with **simplicity** and **cool local / global configuration** options,
+8. with **very little** extra bundle size (+ 2.66 KB)
 
 ## Quick demo
 
@@ -100,7 +101,7 @@ const setCounter = useStore('counter')[1]
 </button>
 ```
 
-The **identity** of this update function is preserved as long as the identity of `useStore`'s three parameters are preserved.
+The **identity** of this update function is preserved as long as the `key` stays the same.
 
 ### 2- The `addSchema` function
 
