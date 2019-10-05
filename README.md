@@ -48,13 +48,13 @@ function SecondComponent() {
 
 Since they share the same key (`'counter'`), they actually seemlessly share the _same value_ and keep one another in sync _no matter_ how hard you try to unsync them. **Even better** : if you refresh the page, nothing changes. The values are persistent. You better like them, because they ain't going anywhere unless you change the key or... the key _prefix_ (see [config](#3--the-config-function)).
 
-The second argument to `useStore`, the number `0` in this case, represents the default counter value, as no persistent save cound be found the first time around.
+The second argument to `useStore`, the number `0` in this case, represents the default counter value, as no persistent save can be found the first time around.
 
 ## Reference
 
 ### 1- The `useStore` hook
 
-This is the cornerstone of this package. It 'connects' you to a specific store slot, identified by key, and returns the value at that location as well as an update function. It's overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all the parts of your UI in sync.
+This is the cornerstone of this package. It 'connects' you to a specific store slot, identified by key, and returns the value at that location as well as an update function. It's overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all parts of your UI in sync.
 
 It can take up to 3 arguments (only the key is required) :
 
