@@ -52,7 +52,7 @@ The second argument to `useStore`, the number `0` in this case, represents the d
 
 ## Reference
 
-#### The `useStore` hook
+### The `useStore` hook
 
 This is the cornerstone of this package. It 'connects' you to a specific store slot, identified by key, and returns the value at that location as well as an update function. It's overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all the parts of your UI in sync.
 
@@ -64,6 +64,8 @@ const [value, setValue] = useStore(key, defaultValue, assertFunction)
 - `key` : Any string unambiguously identifying a unique store slot.
 - `defaultValue` : The value affected by default to the store slot and returned by `useStore` when no previous save was found. This could be any JSON value.
 - `assertFunction` : Any deserialized JSON save passes through this function and has to return `true`. Otherwise, `defaultValue` will be used and overwrite the save. This can be very handy, for example to prevent hydration of ill-formed JSON. I would usually use [ajv](https://www.npmjs.com/package/ajv) in places like these.
+
+#### Identity and hook optimization
 
 Just like most hooks, `useStore` relies on **object identity** to optimize internal recomputations. If your `defaultValue` is **an object or an array**, please use [`useRef`](https://reactjs.org/docs/hooks-reference.html#useref) or [`useMemo`](https://reactjs.org/docs/hooks-reference.html#usememo) to keep the same reference as long as possible :
 
@@ -77,6 +79,8 @@ Similarly, use [`useCallback`](https://reactjs.org/docs/hooks-reference.html#use
 const assert = useCallback(state => ajv.validate(mySchema, state), [])
 const [state, setState] = useStore('key', 42, assert)
 ```
+
+#### The update function
 
 Just like `useState`, the update function can take a value, or a _function_ taking the old store value as an argument and returning the new one.
 
@@ -96,7 +100,7 @@ const setCounter = useStore('counter', 0)[1]
 
 The **identity** of this update function is preserved as long as the identity of `useStore`'s three parameters are preserved.
 
-#### The `config` function
+### The `config` function
 
 With this function, you can configure your stores globally. It has to be called of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
 
