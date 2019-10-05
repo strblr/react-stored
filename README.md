@@ -102,7 +102,7 @@ The **identity** of this update function is preserved as long as the identity of
 
 ### 2- The `addSchema` function
 
-This configuration function allows you to set _default_- default values and _default_ assert functions to certain keys or key _patterns_ outside of your React tree, typically in `index.js` before your `ReactDOM.render`. If you don't rely on props to set default values and assert functions, you shouldn't set them at component-level and `addSchema` should be **your primary way of configuring store slots**.
+This configuration function allows you to set _default_- default values and _default_ assert functions to certain keys or key patterns outside of your React tree, typically in `index.js` before your `ReactDOM.render`. If you don't rely on props to set default values and assert functions, you shouldn't set them at component-level and `addSchema` should be **your primary way of configuring store slots**.
 
 It takes the same arguments as `useStore` except the key can be a regexp. If it is, then all keys matching the regexp will use the given configuration.
 
@@ -171,4 +171,25 @@ config({
 })
 
 ReactDOM.render(<App/>, document.getElementById('root'))
+```
+
+#### Schema definition with `config`
+
+You can also replace all your `addSchema` calls with a single array using the `config` function :
+
+```javascript
+config({
+  keyPrefix: 'my-app-v2.4.1-',
+  schemas: [
+    {
+      key: 'counter',
+      init: 0,
+      assert: counter => counter < 100
+    },
+    {
+      key: /app-v\d+/,
+      init: { currentUser: null }
+    }
+  ]
+})
 ```
