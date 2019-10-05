@@ -181,7 +181,7 @@ You can also replace all your `addSchema` calls with a single array using the `c
 
 ```javascript
 config({
-  keyPrefix: 'my-app-v2.4.1-',
+  keyPrefix: 'my-app',
   schemas: [
     {
       key: 'counter',
@@ -189,7 +189,7 @@ config({
       assert: counter => counter < 100
     },
     {
-      key: /app-v\d+/,
+      key: /log-v\d+/,
       init: { currentUser: null }
     }
   ]
