@@ -32,17 +32,13 @@
   "devDependencies": {
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
-    "@babel/preset-react": "^7.0.0",
     "babel-preset-minify": "^0.5.1"
   },
   "peerDependencies": {
     "react": "^16.8.x"
   },
   "babel": {
-    "presets": [
-      "minify"
-    ],
+    "presets": ["minify"],
     "comments": false
   }
 }
