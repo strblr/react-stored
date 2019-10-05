@@ -41,9 +41,7 @@
   },
   "babel": {
     "presets": [
-      "minify",
-  
-      "@babel/preset-react"
+      "minify"
     ],
     "comments": false
   }
