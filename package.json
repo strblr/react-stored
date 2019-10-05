@@ -1,7 +1,7 @@
 {
   "name": "react-stored",
-  "version": "1.0.0",
-  "description": "The power of useState, but with persistence across browser sessions, and global access without context",
+  "version": "1.0.1",
+  "description": "The power and simplicity of useState, but with persistence across browser sessions, global access without context, speed and memory optimisation, anti-ill form checks, and other cool stuff.",
   "main": "index.js",
   "scripts": {
     "push": "git add . && git commit -m 'mini update' && git push -u origin master"
@@ -19,7 +19,9 @@
     "state",
     "setState",
     "localStorage",
-    "stored"
+    "stored",
+    "safe",
+    "serialization"
   ],
   "author": "ostrebler",
   "license": "MIT",
