@@ -21,7 +21,9 @@
     "localStorage",
     "stored",
     "safe",
-    "serialization"
+    "serialization",
+    "use",
+    "hook"
   ],
   "author": "ostrebler",
   "license": "MIT",
