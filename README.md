@@ -189,8 +189,8 @@ config({
       assert: counter => counter < 100
     },
     {
-      key: /log-v\d+/,
-      init: { currentUser: null }
+      key: /grid-v\d+/,
+      init: { x: 1, y: 0 }
     }
   ]
 })
