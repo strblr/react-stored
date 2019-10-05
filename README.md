@@ -46,7 +46,7 @@ function SecondComponent() {
 }
 ```
 
-Since they share the same key (`'counter'`), they actually seemlessly share the _same value_ and keep one another in sync _no matter_ how hard you try to unsync them. **Even better** : if you refresh the page, nothing changes. The values are persistent. You better like them, because they ain't going anywhere unless you change the key or... the key _prefix_ (see config section below).
+Since they share the same key (`'counter'`), they actually seemlessly share the _same value_ and keep one another in sync _no matter_ how hard you try to unsync them. **Even better** : if you refresh the page, nothing changes. The values are persistent. You better like them, because they ain't going anywhere unless you change the key or... the key _prefix_ (see [config](#3--the-config-function)).
 
 The second argument to `useStore`, the number `0` in this case, represents the default counter value, as no persistent save cound be found the first time around.
 
