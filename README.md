@@ -87,14 +87,14 @@ const [state, setState] = useStore('key', 42, assert)
 Like `useState`, the update function can take a value, or a _function_ taking the old value as an argument and returning the new one.
 
 ```javascript
-const [counter, setCounter] = useStore('counter', 0)
+const [counter, setCounter] = useStore('counter')
 <button onClick={() => setCounter(counter + 1)}>
   Increment
 </button>
 
 // Equivalent to :
 
-const setCounter = useStore('counter', 0)[1]
+const setCounter = useStore('counter')[1]
 <button onClick={() => setCounter(counter => counter + 1)}>
   Increment
 </button>
