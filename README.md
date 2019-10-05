@@ -177,7 +177,7 @@ ReactDOM.render(<App/>, document.getElementById('root'))
 
 #### Schema definition with `config`
 
-You can also replace all your `addSchema` calls with a single array using the `config` function :
+You can also replace all your [`addSchema`](#2--the-addschema-function) calls with a single array using the `config` function :
 
 ```javascript
 config({
