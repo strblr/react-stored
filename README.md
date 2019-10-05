@@ -94,6 +94,8 @@ const setCounter = useStore('counter', 0)[1]
 </button>
 ```
 
+The **identity** of this update function is preserved as long as the identity of `useStore`'s parameters are preserved.
+
 #### The `config` function
 
 With this function, you can configure your stores globally. It has to be called of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
