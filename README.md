@@ -88,7 +88,7 @@ const [counter, setCounter] = useStore('counter', 0)
 
 // Equivalent to :
 
-const [_, setCounter] = useStore('counter', 0)
+const setCounter = useStore('counter', 0)[1]
 <button onClick={() => setCounter(counter => counter + 1)}>
   Increment
 </button>
