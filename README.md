@@ -26,7 +26,7 @@ function FirstComponent() {
     <h1>Counter : {counter}</h1>
     <button onClick={() => setCounter(counter + 1)}>
       Increment
-     </button>
+    </button>
   </>
 }
 ```
@@ -41,7 +41,7 @@ function SecondComponent() {
     <h1>Counter : {counter}</h1>
     <button onClick={() => setCounter(0)}>
       Reset
-     </button>
+    </button>
   </>
 }
 ```
@@ -69,6 +69,29 @@ Just like most hooks, `useStore` relies on **object identity** to optimize inter
 
 ```javascript
 const [value, setValue] = useStore('key', useRef({ x: 1, y: 2 }).current)
+```
+
+Similarly, use [`useCallback`](https://reactjs.org/docs/hooks-reference.html#usecallback) for the assert function :
+
+```javascript
+const assert = useCallback(state => ajv.validate(mySchema, state), [])
+const [state, setState] = useStore('key', 42, assert)
+```
+
+Just like `useState`, the update function can take a value, or a _function_ taking the old store value as an argument and returning the new one.
+
+```javascript
+const [counter, setCounter] = useStore('counter', 0)
+<button onClick={() => setCounter(counter + 1)}>
+  Increment
+</button>
+
+// Equivalent to :
+
+const [_, setCounter] = useStore('counter', 0)
+<button onClick={() => setCounter(counter => counter + 1)}>
+  Increment
+</button>
 ```
 
 #### The `config` function
