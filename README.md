@@ -70,7 +70,7 @@ const [value, setValue] = useStore(key, defaultValue, assertFunction)
 Just like most hooks, `useStore` relies on **object identity** to optimize internal recomputations. If your `defaultValue` is **an object or an array**, please use [`useRef`](https://reactjs.org/docs/hooks-reference.html#useref) or [`useMemo`](https://reactjs.org/docs/hooks-reference.html#usememo) to keep the same reference as long as possible :
 
 ```javascript
-const [value, setValue] = useStore('key', useRef({ x: 1, y: 2 }).current)
+const [coord, setCoord] = useStore('coord', useRef({ x: 1, y: 2 }).current)
 ```
 
 Similarly, use [`useCallback`](https://reactjs.org/docs/hooks-reference.html#usecallback) for the assert function :
