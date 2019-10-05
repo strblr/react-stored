@@ -54,7 +54,7 @@ The second argument to `useStore`, the number `0` in this case, represents the d
 
 ### 1- The `useStore` hook
 
-This is the cornerstone of this package. It 'connects' you to a specific store slot, identified by key, and returns the value at that location as well as an update function. It's overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all parts of your UI in sync.
+This is the cornerstone of this package. It 'connects' you to a specific store slot, identified by key, and returns the value at that location as well as an update function. Its overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all parts of your UI in sync.
 
 It can take up to 3 arguments (only the key is required) :
 
