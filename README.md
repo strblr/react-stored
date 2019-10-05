@@ -3,7 +3,7 @@ The power and simplicity of `useState`, but with persistence across browser sess
 
 Ever dreamed of such of feature but couldn't come up with a 100% clean and satisfying solution ? Well, this package is for you.
 
-#### It is designed to :
+### It is designed to :
 
 1. provide you with a **reliable key-based** `useState`-like feature called `useStore`,
 2. with tree-wide **auto-sync** with similar `useStore` calls,
@@ -13,6 +13,12 @@ Ever dreamed of such of feature but couldn't come up with a 100% clean and satis
 6. with **no unnecessary** rerender, ever,
 7. with **simplicity** and **cool local / global configuration** options,
 8. with **very little** extra bundle size (+ 2.66 KB)
+
+### Install
+
+```
+yarn add react-stored
+```
 
 # Quick demo
 
