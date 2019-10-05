@@ -118,8 +118,8 @@ addSchema('counter', 0, counter => counter < 100)
 // Any invocation of 'counter' will now use 0 as its default value, and ensure
 // that any retrieved save is smaller than 100. If not, 0 will be used instead.
 
-addSchema(/app-v\d+/, { currentUser: null })
-// Any invocation of 'app-v1', 'app-v43', 'app-v9987', etc. will use the given
+addSchema(/coord-v\d+/, { x: 0, y: 4 })
+// Any invocation of 'coord-v1', 'coord-v43', 'coord-v9987', etc. will use the given
 // object as its default value.
 
 ReactDOM.render(<App/>, document.getElementById('root'))
