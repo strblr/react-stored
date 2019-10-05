@@ -219,3 +219,7 @@ config({
 ## 4- The `readStore` function
 
 This gives you the possibility to passively read the content of your store outside of any component. This was useful for me when I needed to pass a stored token to some server requests using [Apollo](https://www.apollographql.com/docs/react/) links. It takes only one argument, the key, and returns the corresponding JSON.
+
+# About
+
+I'm available for suggestions, questions and bug reports. Please use [GitHub's issue tracker](https://github.com/ostrebler/react-stored/issues).
