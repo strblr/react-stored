@@ -85,7 +85,7 @@ Similarly, use [`useCallback`](https://reactjs.org/docs/hooks-reference.html#use
 
 ```javascript
 const assert = useCallback(state => ajv.validate(props.model, state), [props.model])
-const [state, setState] = useStore('key', 42, assert)
+const [state, setState] = useStore('my-state', null, assert)
 ```
 
 **Better** : If possible, set your `defaultValue` and `assertFunction` outside the render tree using [`addSchema`](#2--the-addschema-function). This way, you don't have to worry about identity optimization.
