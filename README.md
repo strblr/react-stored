@@ -88,7 +88,7 @@ const assert = useCallback(state => ajv.validate(props.model, state), [props.mod
 const [state, setState] = useStore('my-state', null, assert)
 ```
 
-**Better** : If possible, set your `defaultValue` and `assertFunction` outside the render tree using [`addSchema`](#2--the-addschema-function). This way, you don't have to worry about identity optimization.
+**Better** : Whenever possible, set your `defaultValue` and `assertFunction` outside the render tree using [`addSchema`](#2--the-addschema-function). This way, you don't have to worry about reference optimization. Plus, the separation between configuration and usage makes your code cleaner.
 
 ### The update function
 
