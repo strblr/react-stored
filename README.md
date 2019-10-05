@@ -16,7 +16,7 @@ Ever dreamed of such of feature but couldn't come up with a 100% clean and satis
 
 ### Install
 
-```
+```console
 yarn add react-stored
 ```
 
