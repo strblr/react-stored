@@ -127,7 +127,7 @@ ReactDOM.render(<App/>, document.getElementById('root'))
 
 ### 3- The `config` function
 
-With this function, you can tweak some general configs. It has to be called outside of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
+With this function, you can tweak some general stuff. It has to be called outside of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
 
 ```javascript
 import React from 'react'
