@@ -46,6 +46,37 @@ function SecondComponent() {
 }
 ```
 
-Since they share the same key (`'counter'`), they actually seemlessly share the _same value_ and keep one another in sync _no matter_ how hard you try to unsync them. **Even better** : if you refresh the page, nothing changes. The values are persistent. You better like them, because they ain't going anywhere unless you change the key or... the key prefix (see config section below)
+Since they share the same key (`'counter'`), they actually seemlessly share the _same value_ and keep one another in sync _no matter_ how hard you try to unsync them. **Even better** : if you refresh the page, nothing changes. The values are persistent. You better like them, because they ain't going anywhere unless you change the key or... the key _prefix_ (see config section below).
 
 The second argument to `useStore`, the number `0` in this case, represents the default counter value, as no persistent save cound be found the first time around.
+
+## Reference
+
+#### The `config` function
+
+With this function, you can configure your stores globally. It has to be called **outside** of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
+
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { config } from 'react-stored'
+import App from './App'
+
+// Below are the DEFAULT settings, it is pointless to set them explicitly to these values :
+
+config({
+  // The persistent storage to be used (could be replaced with sessionStorage) :
+  storage: window.localStorage,
+  
+  // IMPORTANT : A seemless prefix to ALL your keys, this has to be specific to your app :
+  keyPrefix: '',
+  
+  // A function that should transform JSON into a string :
+  serialize: JSON.stringify,
+  
+  // A function that should transform a string into JSON :
+  deserialize: JSON.parse
+})
+
+ReactDOM.render(<App/>, document.getElementById('root'))
+```
