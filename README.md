@@ -125,6 +125,16 @@ addSchema(/coord-v\d+/, { x: 0, y: 4 })
 ReactDOM.render(<App/>, document.getElementById('root'))
 ```
 
+#### What if no default value or assert function is set ?
+
+Here is what's going on everytime you invoke `useStore` on a specific key :
+- If a _previous save_ is found in the storage for that key, it is used. If not :
+- If a default value is set _locally_ (as an argument of `useStore`), it is used. If not :
+- If a default value is set _globally_ (as an argument of `addSchema`), it is used. If not :
+- `null` will be used.
+
+Things are easier with the assert function : if none could be found (not locally nor globally), the functionality is simply discarded.
+
 ### 3- The `config` function
 
 With this function, you can tweak some general stuff. It has to be called outside of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
@@ -140,13 +150,13 @@ import App from './App'
 config({
   // IMPORTANT : A seemless prefix to ALL your keys, this has to be specific to your app :
   keyPrefix: '',
-  
+
   // The persistent storage to be used (could be replaced with sessionStorage) :
   storage: window.localStorage,
-  
+
   // A function that should transform JSON into a string :
   serialize: JSON.stringify,
-  
+
   // A function that should transform a string into JSON :
   deserialize: JSON.parse
 })
@@ -191,7 +201,7 @@ config({
       assert: counter => counter < 100
     },
     {
-      key: /grid-v\d+/,
+      key: /coord-v\d+/,
       init: { x: 1, y: 0 }
     }
   ]
