@@ -141,7 +141,7 @@ Here is what's going on everytime you invoke `useStore` on a specific key :
 - If a default value is set _globally_ (as an argument of `addSchema`), it is used. If not :
 - `null` will be used.
 
-Things are easier with the assert function : if none could be found (not locally nor globally), the functionality is simply discarded.
+Things are easier with the assert function : if none could be found for a specific key (not locally nor globally), the functionality is simply discarded and hydration of previous saves goes without any checks.
 
 ## 3- The `config` function
 
