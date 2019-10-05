@@ -52,9 +52,22 @@ The second argument to `useStore`, the number `0` in this case, represents the d
 
 ## Reference
 
+#### The `useStore` hook
+
+This is the cornerstone of this package. It 'connects' you to a specific store slot, identified by key, and returns the value at that location as well as an update function. It's overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all the parts of your UI in sync.
+
+It can take up to 3 arguments (only the key is required) :
+
+```javascript
+const [value, setValue] = useStore(key, defaultValue, assertFunction)
+```
+- `key` : Any string unambiguously identifying a unique store slot.
+- `defaultValue` : The value affected by default to the store slot and returned by `useStore` when no previous save was found. This could be any JSON value.
+- `assertFunction` : Any deserialized JSON
+
 #### The `config` function
 
-With this function, you can configure your stores globally. It has to be called **outside** of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
+With this function, you can configure your stores globally. It has to be called of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
 
 ```javascript
 import React from 'react'
@@ -85,7 +98,7 @@ Unless you have some very specific use cases, the `keyPrefix` is really the only
 
 Yes, `localStorage` is compartmentalized by domain but you could have several apps by domain. It's just a good habit to set a `keyPrefix` that is specific to your app.
 
-Also, imagine several customers already tested your app and have _their_ local copy of the store. Now say you wanna change the JSON schema because of some new requirements. You could just set `keyPrefix` to the **current version of the app** to prevent any hydration of outdated JSON values.
+Also, imagine several customers already tested your app and have _their local copy_ of the store. Now say you wanna change the JSON schema because of some new requirements. You could just set `keyPrefix` to the **current version of the app**, thus preventing any hydration of outdated JSON saves.
 
 Here is typically what my `index.js` looks like :
 
