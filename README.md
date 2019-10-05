@@ -65,17 +65,38 @@ import App from './App'
 // Below are the DEFAULT settings, it is pointless to set them explicitly to these values :
 
 config({
-  // The persistent storage to be used (could be replaced with sessionStorage) :
-  storage: window.localStorage,
-  
   // IMPORTANT : A seemless prefix to ALL your keys, this has to be specific to your app :
   keyPrefix: '',
+  
+  // The persistent storage to be used (could be replaced with sessionStorage) :
+  storage: window.localStorage,
   
   // A function that should transform JSON into a string :
   serialize: JSON.stringify,
   
   // A function that should transform a string into JSON :
   deserialize: JSON.parse
+})
+
+ReactDOM.render(<App/>, document.getElementById('root'))
+```
+
+Unless you have some very specific use cases, the `keyPrefix` is really the only important part to configure. You set it _once_, and everything stored or retrieved from the storage will use that prefix in addition to the keys used in your components. All this happens of course _seemlessly_, you don't have to think about it.
+
+Yes, `localStorage` is compartmentalized by domain but you could have several apps by domain. It's just a good habit to set a `keyPrefix` that is specific to your app.
+
+Also, imagine several customers already tested your app and have _their_ local copy of the store. Now say you wanna change the JSON schema because of some new requirements. You could just set `keyPrefix` to the **current version of the app** to prevent any hydration of outdated JSON values.
+
+Here is typically what my `index.js` looks like :
+
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { config } from 'react-stored'
+import App from './App'
+
+config({
+  keyPrefix: 'my-app-v2.4.1-',
 })
 
 ReactDOM.render(<App/>, document.getElementById('root'))
