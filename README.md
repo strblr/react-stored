@@ -1,5 +1,5 @@
 # react-stored
-The power and simplicity of `useState`, but with persistence across browser sessions, global sync'd access without context, speed and memory optimisation, anti-ill form checks, and other cool stuff.
+The power and simplicity of `useState`, but with persistence across browser sessions, global sync'd access without context, speed and memory optimization, anti-ill form checks, and other cool stuff.
 
 Ever dreamed of such of feature but couldn't come up with a 100% clean and satisfying solution ? Well, this package is for you.
 
@@ -63,7 +63,7 @@ The second argument to `useStore`, the number `0` in this case, represents the d
 
 This is the cornerstone of this package. It 'connects' you to a specific store slot, identified by key, and returns the value at that location as well as an update function. Its overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all parts of your UI in sync.
 
-It can take up to 3 arguments (only the key is required) :
+It can take up to 3 arguments (**only the key is required**) :
 
 ```javascript
 const [value, setValue] = useStore(key, defaultValue, assertFunction)
