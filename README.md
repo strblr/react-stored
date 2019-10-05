@@ -80,6 +80,8 @@ const assert = useCallback(state => ajv.validate(mySchema, state), [])
 const [state, setState] = useStore('key', 42, assert)
 ```
 
+**Better** : If possible, set your `defaultValue` and `assertFunction` outside the render tree using [`addSchema`](#2--the-addschema-function). This way, you don't have to worry about identity optimization.
+
 #### The update function
 
 Like `useState`, the update function can take a value, or a _function_ taking the old value as an argument and returning the new one.
