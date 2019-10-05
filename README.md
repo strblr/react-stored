@@ -160,7 +160,7 @@ Unless you have some very specific use cases, the `keyPrefix` is really the only
 
 Yes, `localStorage` is compartmentalized by domain but you could have several apps by domain. It's just a good habit to set a `keyPrefix` that is specific to your app. It defines a namespace.
 
-Also, imagine several customers already tested your app and have _their local copy_ of the store. Now say you wanna change the JSON schema because of some new requirements. You could just set `keyPrefix` to the **current version of the app**, thus preventing any hydration of outdated JSON saves.
+Also, imagine several customers already tested your app and have _their local copy_ of the store. Now say you wanna change the JSON structure because of some new requirements. You could just set `keyPrefix` to the **current version of the app**, thus preventing any hydration of outdated JSON saves.
 
 Here is typically what my `index.js` looks like :
 
