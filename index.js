@@ -71,7 +71,6 @@ export const useStore = (key, init, assert) => {
 
   useMemo(
     () => {
-      console.log('Deserialize for', schema.key)
       try {
         const serialized = storeStorage.getItem(`${storeKeyPrefix}${schema.key}`)
         if(serialized === null)
@@ -91,7 +90,6 @@ export const useStore = (key, init, assert) => {
   const updateTrigger = useState({})[1]
 
   useEffect(() => {
-    console.log('Register listener for', schema.key)
     const updater = newValue => {
       value.current = newValue
       updateTrigger({})
@@ -104,11 +102,18 @@ export const useStore = (key, init, assert) => {
 
   const globalUpdater = useCallback(
     newValue => {
+      if(typeof newValue === 'function')
+        newValue = newValue(value.current)
       storeStorage.setItem(`${storeKeyPrefix}${schema.key}`, storeSerialize(newValue))
       callUpdaters(schema.key, newValue)
     },
-    [schema]
+    [schema, value]
   )
 
   return [value.current, globalUpdater]
+}
+
+export const readStore = key => {
+  const serialized = storeStorage.getItem(`${storeKeyPrefix}${key}`)
+  return storeDeserialize(serialized)
 }
