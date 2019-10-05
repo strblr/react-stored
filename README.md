@@ -222,4 +222,4 @@ This gives you the possibility to passively read the content of your store outsi
 
 # About
 
-I'm available for suggestions, questions and bug reports. Please use [GitHub's issue tracker](https://github.com/ostrebler/react-stored/issues).
+I look forward to any suggestion, question or bug report. Please use [GitHub's issue tracker](https://github.com/ostrebler/react-stored/issues).
