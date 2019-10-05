@@ -4,14 +4,12 @@
   "description": "The power and simplicity of useState, but with persistence across browser sessions, global sync'd access without context, speed and memory optimisation, anti-ill form checks, and other cool stuff.",
   "main": "index.js",
   "scripts": {
-    "push": "git add . && git commit -m 'mini update' && git push -u origin master"
+    "push": "git add . && git commit -m 'mini update' && git push -u origin master",
+    "build": "babel src.js -o index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ostrebler/react-stored.git"
-  },
-  "peerDependencies": {
-    "react": "^16.8.x"
   },
   "keywords": [
     "react",
@@ -30,5 +28,23 @@
   "bugs": {
     "url": "https://github.com/ostrebler/react-stored/issues"
   },
-  "homepage": "https://github.com/ostrebler/react-stored#readme"
+  "homepage": "https://github.com/ostrebler/react-stored#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-react": "^7.0.0",
+    "babel-preset-minify": "^0.5.1"
+  },
+  "peerDependencies": {
+    "react": "^16.8.x"
+  },
+  "babel": {
+    "presets": [
+      "minify",
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "comments": false
+  }
 }
