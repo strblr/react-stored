@@ -181,7 +181,7 @@ import { config } from 'react-stored'
 import App from './App'
 
 config({
-  keyPrefix: 'my-app-v2.4.1-',
+  keyPrefix: 'my-app-v2.4.1-'
 })
 
 ReactDOM.render(<App/>, document.getElementById('root'))
@@ -193,7 +193,7 @@ You can also replace all your [`addSchema`](#2--the-addschema-function) calls wi
 
 ```javascript
 config({
-  keyPrefix: 'my-app',
+  keyPrefix: 'my-app-v4',
   schemas: [
     {
       key: 'counter',
