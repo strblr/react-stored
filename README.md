@@ -63,7 +63,13 @@ const [value, setValue] = useStore(key, defaultValue, assertFunction)
 ```
 - `key` : Any string unambiguously identifying a unique store slot.
 - `defaultValue` : The value affected by default to the store slot and returned by `useStore` when no previous save was found. This could be any JSON value.
-- `assertFunction` : Any deserialized JSON
+- `assertFunction` : Any deserialized JSON save passes through this function and has to return `true`. Otherwise, `defaultValue` will be used and overwrite the save. This can be very handy, for example to prevent hydration of ill-formed JSON. I would usually use [ajv](https://www.npmjs.com/package/ajv) in places like these.
+
+Just like most hooks, `useStore` relies on object identity to optimize internal recomputations. If your `defaultValue` is an object or an array, please use [`useRef`](https://reactjs.org/docs/hooks-reference.html#useref) or [`useMemo`](https://reactjs.org/docs/hooks-reference.html#usememo) to keep the same reference as long as possible :
+
+```javascript
+const [value, setValue] = useStore('key', useRef({ x: 1, y: 2 }).current)
+```
 
 #### The `config` function
 
