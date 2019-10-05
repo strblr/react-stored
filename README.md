@@ -152,6 +152,8 @@ config({
 ReactDOM.render(<App/>, document.getElementById('root'))
 ```
 
+#### `keyPrefix` is important
+
 Unless you have some very specific use cases, the `keyPrefix` is really the only important part to configure. You set it _once_, and everything stored or retrieved from the storage will use that prefix in addition to the keys used in your components. All this happens of course _seemlessly_, you don't have to think about it.
 
 Yes, `localStorage` is compartmentalized by domain but you could have several apps by domain. It's just a good habit to set a `keyPrefix` that is specific to your app.
