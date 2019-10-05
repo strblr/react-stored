@@ -20,6 +20,20 @@ Ever dreamed of such of feature but couldn't come up with a 100% clean and satis
 yarn add react-stored
 ```
 
+### Table of content
+
+- [Quick demo](#quick-demo)
+- [Reference](#reference)
+  * [1- The `useStore` hook](#1--the--usestore--hook)
+    + [Identity and hook optimization](#identity-and-hook-optimization)
+    + [The update function](#the-update-function)
+  * [2- The `addSchema` function](#2--the--addschema--function)
+    + [What if no default value or assert function is set ?](#what-if-no-default-value-or-assert-function-is-set--)
+  * [3- The `config` function](#3--the--config--function)
+    + [`keyPrefix` is important](#-keyprefix--is-important)
+    + [Schema definition with `config`](#schema-definition-with--config-)
+  * [4- The `readStore` function](#4--the--readstore--function)
+
 # Quick demo
 
 Say you have the two following components far away from one another in the tree :
