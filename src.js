@@ -4,14 +4,16 @@ import { useRef, useState, useMemo, useCallback, useEffect } from 'react'
 
 let storeStorage = window.localStorage
 let storeKeyPrefix = ''
+let storeCrossTab = false
 let storeSerialize = JSON.stringify
 let storeDeserialize = JSON.parse
 
 const storeSchemas = []
 
-export const config = ({ storage, keyPrefix, serialize, deserialize, schemas }) => {
+export const config = ({ storage, keyPrefix, crossTab, serialize, deserialize, schemas }) => {
   storage && (storeStorage = storage)
-  keyPrefix && (storeKeyPrefix = keyPrefix)
+  typeof keyPrefix === 'string' && (storeKeyPrefix = keyPrefix)
+  typeof crossTab === 'boolean' && (storeCrossTab = crossTab)
   serialize && (storeSerialize = serialize)
   deserialize && (storeDeserialize = deserialize)
   schemas && storeSchemas.push(...schemas)
@@ -44,6 +46,16 @@ const callUpdaters = (key, value) => {
     for(const updater of storeUpdaters[key])
       updater(value)
 }
+
+window.addEventListener('storage', event => {
+  if(
+    storeCrossTab &&
+    event.storageArea === storeStorage &&
+    event.key && event.key.startsWith(storeKeyPrefix) &&
+    event.oldValue !== null && event.newValue !== null
+  )
+    callUpdaters(event.key.substring(storeKeyPrefix.length), storeDeserialize(event.newValue))
+})
 
 /* React Stuff */
 
