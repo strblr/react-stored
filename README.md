@@ -6,7 +6,7 @@ Ever dreamed of such of feature but couldn't come up with a 100% clean and satis
 ### It is designed to :
 
 1. provide you with a **reliable key-based** `useState`-like feature called `useStore`,
-2. with tree-wide **auto-sync** with similar `useStore` calls,
+2. with **auto-sync** with other `useStore` calls sharing the same key,
 3. **without** context,
 4. with **persistence** across page reloads and browser sessions,
 5. with **configurable safety asserts** on deserialization and **default fallbacks**,
@@ -69,8 +69,8 @@ It can take up to 3 arguments (**only the key is required**) :
 const [value, setValue] = useStore(key, defaultValue, assertFunction)
 ```
 - `key` : Any string, unambiguously identifying a unique store slot.
-- `defaultValue` : The value affected by default to the store slot and returned by `useStore` when no previous save was found. This could be any JSON value.
-- `assertFunction` : Any deserialized JSON save passes through this function and has to return `true`. Otherwise, `defaultValue` will be used and overwrite the save. This can be very handy, for example to prevent hydration of ill-formed JSON. I would usually use [ajv](https://www.npmjs.com/package/ajv) in places like these.
+- `defaultValue` : The value affected by default to the store slot and returned by `useStore` when no previous save is found. This could be any JSON value.
+- `assertFunction` : Any deserialized JSON save passes through this function and has to return `true`. Otherwise, `defaultValue` will be used and overwrite the save. This can be very handy, for example to prevent the hydration of `useStore` with ill-formed or outdated JSON. I would usually use [ajv](https://www.npmjs.com/package/ajv) in places like these.
 
 ### Identity and hook optimization
 
@@ -112,7 +112,7 @@ The **identity** of this update function is preserved as long as the `key` stays
 
 ## 2- The `addSchema` function
 
-This configuration function allows you to set _default_- default values and _default_ assert functions to certain keys or key patterns outside of your React tree, typically in `index.js` before your `ReactDOM.render`. If you don't rely on props to set default values and assert functions, you shouldn't set them at component-level and `addSchema` should be **your primary way of configuring store slots**.
+This configuration function allows you to set _default_- default values and _default_ assert functions to certain keys or key patterns outside of your React tree, typically in `index.js` before your `ReactDOM.render`. If you don't rely on props to set default values and assert functions, you shouldn't set them at component-level and `addSchema` should be **your primary configuration choice**.
 
 It takes the same arguments as `useStore` except the key can be a regexp. If it is, then all keys matching the regexp will use the given configuration.
 
@@ -162,7 +162,7 @@ config({
   // The persistent storage to be used (could be replaced with sessionStorage) :
   storage: window.localStorage,
 
-  // When true, real-time auto-sync is extended across all similar browser tabs
+  // When true, real-time auto-sync is extended across all similar browser tabs :
   crossTab: false,
 
   // A function that should transform JSON into a string :
