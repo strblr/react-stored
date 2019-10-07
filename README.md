@@ -112,7 +112,7 @@ The **identity** of this update function is preserved as long as the `key` stays
 
 ## 2- The `addSchema` function
 
-This configuration function allows you to set _default_- default values and _default_ assert functions to certain keys or key patterns outside of your React tree, typically in `index.js` before your `ReactDOM.render`. If you don't rely on props to set default values and assert functions, you shouldn't set them at component-level and `addSchema` should be **your primary configuration choice**.
+This configuration function allows you to set _default_- default values and _default_ assert functions to certain keys or key patterns outside of your React tree, typically in `index.js` before your `ReactDOM.render`. **If you don't rely on props to set default values and assert functions, you shouldn't set them at component-level and `addSchema` should be your primary configuration choice**.
 
 It takes the same arguments as `useStore` except the key can be a regexp. If it is, then all keys matching the regexp will use the given configuration.
 
