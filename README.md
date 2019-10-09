@@ -120,6 +120,7 @@ It takes the same arguments as `useStore` except the key can be a regexp. If it 
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { addSchema } from 'react-stored'
+import Ajv from 'ajv'
 import App from './App'
 
 addSchema('counter', 0, counter => counter < 100)
@@ -129,6 +130,18 @@ addSchema('counter', 0, counter => counter < 100)
 addSchema(/coord-v\d+/, { x: 0, y: 4 })
 // Any invocation of 'coord-v1', 'coord-v43', 'coord-v9987', etc. will use the given
 // object as its default value.
+
+addSchema(/array-[0-9A-F]{2}/, [], array => {
+  const ajv = new Ajv()
+  const schema = {
+    type: 'array',
+    items: { type: 'string' }
+  }
+  return ajv.validate(schema, array)
+})
+// Any invocation from 'array-00' to 'array-FF' will be initialized with an
+// empty array. Any previous save should be an array of strings, otherwise
+// it will be overwritten with an empty array.
 
 ReactDOM.render(<App/>, document.getElementById('root'))
 ```
@@ -162,7 +175,7 @@ config({
   // The persistent storage to be used (could be replaced with sessionStorage) :
   storage: window.localStorage,
 
-  // When true, real-time auto-sync is extended across all similar browser tabs :
+  // When true, real-time auto-sync is extended across all browser tabs sharing the same origin :
   crossTab: false,
 
   // A function that should transform JSON into a string :
