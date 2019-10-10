@@ -232,6 +232,20 @@ config({
 })
 ```
 
+### What about storing non-JSON values like dates, maps and simple functions ?
+
+This is possible with a careful use of [serialize-javascript](https://www.npmjs.com/package/serialize-javascript), [`eval`](https://javascriptweblog.wordpress.com/2010/04/19/how-evil-is-eval/) and a bit of configuration :
+
+```javascript
+import { config } from 'react-stored'
+import serialize from 'serialize-javascript'
+
+config({
+  serialize,
+  deserialize: str => eval(`(${str})`)
+})
+```
+
 ## 4- The `readStore` function
 
 This gives you the possibility to passively read the content of your store outside of any component. This was useful for me when I needed to pass a stored token to some server requests using [Apollo](https://www.apollographql.com/docs/react/) links. It takes only one argument, the key, and returns the corresponding JSON.
