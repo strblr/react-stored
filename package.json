@@ -1,7 +1,7 @@
 {
   "name": "react-stored",
-  "version": "1.2.3",
-  "description": "The power and simplicity of useState, but with persistence across browser sessions, global auto-sync without context, speed and memory optimisation, anti-ill form checks, and other cool stuff.",
+  "version": "1.2.4",
+  "description": "The ultimate useStore implementation. The power and simplicity of useState, but with persistence, global key-based synchronization without context, speed and reference optimization, safety checks, and other cool stuff.",
   "main": "index.js",
   "scripts": {
     "push": "git add . && git commit -m 'mini update' && git push -u origin master",
@@ -14,12 +14,17 @@
   "keywords": [
     "react",
     "store",
+    "storage",
     "state",
     "setState",
     "localStorage",
     "stored",
+    "global",
     "safe",
     "serialization",
+    "deserialization",
+    "data",
+    "persistence",
     "use",
     "hook"
   ],
