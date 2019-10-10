@@ -1,6 +1,6 @@
 {
   "name": "react-stored",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "The power and simplicity of useState, but with persistence across browser sessions, global auto-sync without context, speed and memory optimisation, anti-ill form checks, and other cool stuff.",
   "main": "index.js",
   "scripts": {
