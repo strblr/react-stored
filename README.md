@@ -69,7 +69,7 @@ It can take up to 3 arguments (**only the key is required**) :
 const [value, setValue] = useStore(key, defaultValue, assertFunction)
 ```
 - `key` : Any string, unambiguously identifying a unique store slot.
-- `defaultValue` : The value affected by default to the store slot and returned by `useStore` when no previous save is found. This could be any JSON value.
+- `defaultValue` : The value affected by default to the store slot and returned by `useStore` when no previous save is found. This could be any JSON value (and [even more](#what-about-storing-non-json-values-like-dates-maps-and-simple-functions-)).
 - `assertFunction` : Any deserialized JSON save passes through this function and has to return `true`. Otherwise, `defaultValue` will be used and overwrite the save. This can be very handy, for example to prevent the hydration of `useStore` with ill-formed or outdated JSON. I would usually use [ajv](https://www.npmjs.com/package/ajv) in places like these.
 
 ### Identity and hook optimization
