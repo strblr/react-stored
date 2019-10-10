@@ -13,10 +13,14 @@ const storeSchemas = []
 export const config = ({ storage, keyPrefix, crossTab, serialize, deserialize, schemas }) => {
   storage && (storeStorage = storage)
   typeof keyPrefix === 'string' && (storeKeyPrefix = keyPrefix)
-  typeof crossTab === 'boolean' && (storeCrossTab = crossTab)
   serialize && (storeSerialize = serialize)
   deserialize && (storeDeserialize = deserialize)
-  schemas && storeSchemas.push(...schemas)
+  schemas && storeSchemas.splice(0, storeSchemas.length, ...schemas)
+
+  if(typeof crossTab === 'boolean' && crossTab !== storeCrossTab) {
+    window[crossTab ? 'addEventListener' : 'removeEventListener']('storage', callUpdatersFromEvent)
+    storeCrossTab = crossTab
+  }
 }
 
 export const addSchema = (key, init, assert) => {
@@ -30,8 +34,7 @@ const storeUpdaters = {}
 const addUpdater = (key, updater) => {
   if(!(key in storeUpdaters))
     storeUpdaters[key] = [updater]
-  else
-    storeUpdaters[key].push(updater)
+  else storeUpdaters[key].push(updater)
 }
 
 const removeUpdater = (key, updater) => {
@@ -47,15 +50,15 @@ const callUpdaters = (key, value) => {
       updater(value)
 }
 
-window.addEventListener('storage', event => {
-  if(
-    storeCrossTab &&
-    event.storageArea === storeStorage &&
-    event.key && event.key.startsWith(storeKeyPrefix) &&
-    event.oldValue !== null && event.newValue !== null
+const callUpdatersFromEvent = event => {
+  event.storageArea === storeStorage
+  && event.key && event.key.startsWith(storeKeyPrefix)
+  && event.oldValue !== null && event.newValue !== null
+  && callUpdaters(
+    event.key.substring(storeKeyPrefix.length),
+    storeDeserialize(event.newValue)
   )
-    callUpdaters(event.key.substring(storeKeyPrefix.length), storeDeserialize(event.newValue))
-})
+}
 
 /* React Stuff */
 

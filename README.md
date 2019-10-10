@@ -1,5 +1,5 @@
 # react-stored
-The power and simplicity of `useState`, but with persistence across browser sessions, global auto-sync without context, speed and memory optimization, anti-ill form checks, and other cool stuff.
+The ultimate `useStore` implementation. The power and simplicity of `useState`, but with persistence, global key-based synchronization without context, speed and reference optimization, safety checks, and other cool stuff.
 
 Ever dreamed of such of feature but couldn't come up with a 100% clean and satisfying solution ? Well, this package is for you.
 
