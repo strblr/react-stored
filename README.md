@@ -8,7 +8,7 @@ Ever dreamed of such of feature but couldn't come up with a 100% satisfying solu
 1. provide you with a **reliable key-based** `useState`-like feature called `useStore`,
 2. with **auto-sync** with other `useStore` calls sharing the same key,
 3. **without** context,
-4. with **persistence** across page reloads and browser sessions ([or not](#what-if-you-dont-want-your-stores-to-be-persistent-)),
+4. with **persistence** across page reloads and browser sessions ([or not](#faq)),
 5. with **configurable safety asserts** on deserialization and **default fallbacks**,
 6. with **no unnecessary** rerender, ever,
 7. with **SSR** capacities (see [FAQ](#what-if-you-are-rendering-server-side-)),
