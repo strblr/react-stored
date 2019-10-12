@@ -11,7 +11,7 @@ Ever dreamed of such of feature but couldn't come up with a 100% satisfying solu
 4. with **persistence** across page reloads and browser sessions,
 5. with **configurable safety asserts** on deserialization and **default fallbacks**,
 6. with **no unnecessary** rerender, ever,
-7. with [**SSR**](#what-if-you-are-rendering-server-side) capacities,
+7. with **SSR** capacities (see [FAQ](#what-if-you-are-rendering-server-side)),
 7. with **simplicity** and **cool local / global configuration** options,
 8. with **zero dependency** (other than [React](https://reactjs.org/) of course),
 9. with **very little** extra bundle size (+ 2.6 KB (4 times less than this very readme))
