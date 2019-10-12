@@ -13,7 +13,7 @@ Ever dreamed of such of feature but couldn't come up with a 100% satisfying solu
 6. with **no unnecessary** rerender, ever,
 7. with **simplicity** and **cool local / global configuration** options,
 8. with **zero dependency** (other than [React](https://reactjs.org/) of course),
-8. with **very little** extra bundle size (+ 2.6 KB (4 times less than this very readme))
+9. with **very little** extra bundle size (+ 2.6 KB (4 times less than this very readme))
 
 [Go to FAQ](#faq)
 
@@ -246,18 +246,13 @@ Things are easier with the assert function : if none could be found for a specif
 Since you have **absolute control** over the actual storage being used in the background (see [`config`](#3--the-config-function)), you can use your own custom in-memory version (it just has to implement [`getItem`](https://developer.mozilla.org/en-US/docs/Web/API/Storage/getItem) and [`setItem`](https://developer.mozilla.org/en-US/docs/Web/API/Storage/setItem)). There are _plenty_ of npm packages with such alternatives. I personally like [memorystorage](https://www.npmjs.com/package/memorystorage) :
 
 ```javascript
-import React from 'react'
-import ReactDOM from 'react-dom'
 import { config } from 'react-stored'
 import MemoryStorage from 'memorystorage'
-import App from './App'
 
 config({
   keyPrefix: 'whatever',
   storage: new MemoryStorage()
 })
-
-ReactDOM.render(<App/>, document.getElementById('root'))
 ```
 
 ## What if you are rendering server-side ?
@@ -269,7 +264,7 @@ import { config } from 'react-stored'
 import storage from 'local-storage-fallback'
 
 config({
-  keyPrefix: 'aa',
+  keyPrefix: 'whatever',
   storage
 })
 ```
