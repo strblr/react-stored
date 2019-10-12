@@ -258,15 +258,15 @@ config({
 
 ## What if you are rendering server-side ?
 
-Dead simple. Again, you have to tweak your [`config`](#3--the-config-function) to use a universal version of `localStorage` (i.e. with in-memory fallback on server-side). [`local-storage-fallback`](https://www.npmjs.com/package/local-storage-fallback) does just that :
+Dead simple. Again, you have to tweak your [`config`](#3--the-config-function) to use a universal version of `localStorage` (i.e. with in-memory fallback on server-side).
 
 ```javascript
 import { config } from 'react-stored'
-import storage from 'local-storage-fallback'
+import MemoryStorage from 'memorystorage'
 
 config({
   keyPrefix: 'whatever',
-  storage
+  storage: typeof window === 'undefined' ? new MemoryStorage() : window.localStorage
 })
 ```
 
