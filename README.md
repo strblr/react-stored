@@ -241,6 +241,10 @@ Here is what's going on everytime you invoke `useStore` on a specific key :
 
 Things are easier with the assert function : if none could be found for a specific key (not locally nor globally), the functionality is simply discarded and hydration of previous saves goes without any checks.
 
+## What if you don't want your stores to be persistent ?
+
+## What if you are rendering server-side ?
+
 ## What about storing non-JSON values like dates, maps and simple functions ?
 
 This is possible with a careful use of [serialize-javascript](https://www.npmjs.com/package/serialize-javascript), [`eval`](https://javascriptweblog.wordpress.com/2010/04/19/how-evil-is-eval/) and a bit of configuration :
