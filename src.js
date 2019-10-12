@@ -90,7 +90,7 @@ export const useStore = (key, init, assert) => {
     [key, init, assert, schema]
   )
 
-  const [, updateTrigger] = useState({})
+  const updateTrigger = useState({})[1]
 
   useEffect(
     () => {
