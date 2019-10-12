@@ -2,29 +2,23 @@ import { useRef, useState, useMemo, useCallback, useEffect } from 'react'
 
 /* Configurables */
 
-let storeStorage = window.localStorage
-let storeKeyPrefix = ''
-let storeCrossTab = false
-let storeSerialize = JSON.stringify
-let storeDeserialize = JSON.parse
+const storeConfig = {
+  keyPrefix: '',
+  storage: window.localStorage,
+  crossTab: false,
+  serialize: JSON.stringify,
+  deserialize: JSON.parse,
+  schemas: []
+}
 
-const storeSchemas = []
-
-export const config = ({ storage, keyPrefix, crossTab, serialize, deserialize, schemas }) => {
-  storage && (storeStorage = storage)
-  typeof keyPrefix === 'string' && (storeKeyPrefix = keyPrefix)
-  serialize && (storeSerialize = serialize)
-  deserialize && (storeDeserialize = deserialize)
-  schemas && storeSchemas.splice(0, storeSchemas.length, ...schemas)
-
-  if(typeof crossTab === 'boolean' && crossTab !== storeCrossTab) {
-    window[crossTab ? 'addEventListener' : 'removeEventListener']('storage', callUpdatersFromEvent)
-    storeCrossTab = crossTab
-  }
+export const config = options => {
+  if('crossTab' in options && options.crossTab !== storeConfig.crossTab)
+    window[options.crossTab ? 'addEventListener' : 'removeEventListener']('storage', callUpdatersFromEvent)
+  Object.assign(storeConfig, options)
 }
 
 export const addSchema = (key, init, assert) => {
-  storeSchemas.push({ key, init, assert })
+  storeConfig.schemas.push({ key, init, assert })
 }
 
 /* Update Events */
@@ -51,12 +45,12 @@ const callUpdaters = (key, value) => {
 }
 
 const callUpdatersFromEvent = event => {
-  event.storageArea === storeStorage
-  && event.key && event.key.startsWith(storeKeyPrefix)
+  event.storageArea === storeConfig.storage
+  && event.key && event.key.startsWith(storeConfig.keyPrefix)
   && event.oldValue !== null && event.newValue !== null
   && callUpdaters(
-    event.key.substring(storeKeyPrefix.length),
-    storeDeserialize(event.newValue)
+    event.key.substring(storeConfig.keyPrefix.length),
+    storeConfig.deserialize(event.newValue)
   )
 }
 
@@ -65,8 +59,8 @@ const callUpdatersFromEvent = event => {
 export const useStore = (key, init, assert) => {
   const value = useRef()
 
-  const storeSchema = useMemo(
-    () => storeSchemas.find(schema => {
+  const schema = useMemo(
+    () => storeConfig.schemas.find(schema => {
       if(typeof schema.key === 'string')
         return schema.key === key
       else // regexp
@@ -77,23 +71,23 @@ export const useStore = (key, init, assert) => {
 
   useMemo(
     () => {
-      const finalInit = [init, storeSchema && storeSchema.init, null].find(init => init !== undefined)
-      const finalAssert = assert || (storeSchema && storeSchema.assert)
+      const finalInit = [init, schema && schema.init, null].find(init => init !== undefined)
+      const finalAssert = assert || (schema && schema.assert)
 
       try {
-        const serialized = storeStorage.getItem(`${storeKeyPrefix}${key}`)
+        const serialized = storeConfig.storage.getItem(`${storeConfig.keyPrefix}${key}`)
         if(serialized === null)
           throw new Error()
-        const stored = storeDeserialize(serialized)
+        const stored = storeConfig.deserialize(serialized)
         if(finalAssert && !finalAssert(stored))
           throw new Error()
         value.current = stored
       } catch(err) {
-        storeStorage.setItem(`${storeKeyPrefix}${key}`, storeSerialize(finalInit))
+        storeConfig.storage.setItem(`${storeConfig.keyPrefix}${key}`, storeConfig.serialize(finalInit))
         value.current = finalInit
       }
     },
-    [key, init, assert, storeSchema]
+    [key, init, assert, schema]
   )
 
   const updateTrigger = useState({})[1]
@@ -113,8 +107,10 @@ export const useStore = (key, init, assert) => {
     newValue => {
       if(typeof newValue === 'function')
         newValue = newValue(value.current)
-      storeStorage.setItem(`${storeKeyPrefix}${key}`, storeSerialize(newValue))
-      callUpdaters(key, newValue)
+      if(newValue !== value.current) {
+        storeConfig.storage.setItem(`${storeConfig.keyPrefix}${key}`, storeConfig.serialize(newValue))
+        callUpdaters(key, newValue)
+      }
     },
     [key]
   )
@@ -123,6 +119,6 @@ export const useStore = (key, init, assert) => {
 }
 
 export const readStore = key => {
-  const serialized = storeStorage.getItem(`${storeKeyPrefix}${key}`)
-  return storeDeserialize(serialized)
+  const serialized = storeConfig.storage.getItem(`${storeConfig.keyPrefix}${key}`)
+  return storeConfig.deserialize(serialized)
 }
