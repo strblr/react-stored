@@ -4,7 +4,7 @@ import { useRef, useState, useMemo, useCallback, useEffect } from 'react'
 
 const storeConfig = {
   keyPrefix: '',
-  storage: window.localStorage,
+  storage: typeof window !== 'undefined' && window.localStorage,
   crossTab: false,
   serialize: JSON.stringify,
   deserialize: JSON.parse,
@@ -12,7 +12,7 @@ const storeConfig = {
 }
 
 export const config = options => {
-  if('crossTab' in options && options.crossTab !== storeConfig.crossTab)
+  if(options.hasOwnProperty('crossTab') && typeof window !== 'undefined' && options.crossTab !== storeConfig.crossTab)
     window[options.crossTab ? 'addEventListener' : 'removeEventListener']('storage', callUpdatersFromEvent)
   Object.assign(storeConfig, options)
 }
@@ -26,20 +26,20 @@ export const addSchema = (key, init, assert) => {
 const storeUpdaters = {}
 
 const addUpdater = (key, updater) => {
-  if(key in storeUpdaters)
+  if(storeUpdaters.hasOwnProperty(key))
     storeUpdaters[key].push(updater)
   else storeUpdaters[key] = [updater]
 }
 
 const removeUpdater = (key, updater) => {
-  if(key in storeUpdaters) {
+  if(storeUpdaters.hasOwnProperty(key)) {
     const index = storeUpdaters[key].indexOf(updater)
     index !== -1 && storeUpdaters[key].splice(index, 1)
   }
 }
 
 const callUpdaters = (key, value) => {
-  if(key in storeUpdaters)
+  if(storeUpdaters.hasOwnProperty(key))
     for(const updater of storeUpdaters[key])
       updater(value)
 }

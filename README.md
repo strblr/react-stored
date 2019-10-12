@@ -147,16 +147,6 @@ addSchema(/array-[0-9A-F]{2}/, [], array => {
 ReactDOM.render(<App/>, document.getElementById('root'))
 ```
 
-### What if no default value or assert function is set ?
-
-Here is what's going on everytime you invoke `useStore` on a specific key :
-- If a _previous save_ is found in the storage for that key, it is used. If not :
-- If a default value is set _locally_ (as an argument of `useStore`), it is used. If not :
-- If a default value is set _globally_ (as an argument of `addSchema`), it is used. If not :
-- `null` will be used.
-
-Things are easier with the assert function : if none could be found for a specific key (not locally nor globally), the functionality is simply discarded and hydration of previous saves goes without any checks.
-
 ## 3- The `config` function
 
 With this function, you can tweak some general stuff. It has to be called outside of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
@@ -233,7 +223,23 @@ config({
 })
 ```
 
-### What about storing non-JSON values like dates, maps and simple functions ?
+## 4- The `readStore` function
+
+This gives you the possibility to passively read the content of your store outside of any component. This was useful for me when I needed to pass a stored token to some server requests using [Apollo](https://www.apollographql.com/docs/react/) links. It takes only one argument, the key, and returns the corresponding JSON.
+
+# FAQ
+
+## What if no default value or assert function is set ?
+
+Here is what's going on everytime you invoke `useStore` on a specific key :
+- If a _previous save_ is found in the storage for that key, it is used. If not :
+- If a default value is set _locally_ (as an argument of `useStore`), it is used. If not :
+- If a default value is set _globally_ (as an argument of `addSchema`), it is used. If not :
+- `null` will be used.
+
+Things are easier with the assert function : if none could be found for a specific key (not locally nor globally), the functionality is simply discarded and hydration of previous saves goes without any checks.
+
+## What about storing non-JSON values like dates, maps and simple functions ?
 
 This is possible with a careful use of [serialize-javascript](https://www.npmjs.com/package/serialize-javascript), [`eval`](https://javascriptweblog.wordpress.com/2010/04/19/how-evil-is-eval/) and a bit of configuration :
 
@@ -246,10 +252,6 @@ config({
   deserialize: str => eval(`(${str})`)
 })
 ```
-
-## 4- The `readStore` function
-
-This gives you the possibility to passively read the content of your store outside of any component. This was useful for me when I needed to pass a stored token to some server requests using [Apollo](https://www.apollographql.com/docs/react/) links. It takes only one argument, the key, and returns the corresponding JSON.
 
 # About
 
