@@ -62,7 +62,7 @@ The second argument to `useStore`, the number `0` in this case, represents the d
 
 ## 1- The `useStore` hook
 
-This is the cornerstone of this package. It 'connects' you to a specific store slot, identified by key, and returns the value at that location as well as an update function. Its overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all parts of your UI in sync.
+This is the cornerstone of this package. It 'connects' you to a specific store, identified by key, and returns the value at that location as well as an update function. Its overall feel mimics `useState`. It also listens to any outside change, and rerenders accordingly to keep all parts of your UI in sync.
 
 It can take up to 3 arguments (**only the key is required**) :
 
@@ -70,7 +70,7 @@ It can take up to 3 arguments (**only the key is required**) :
 const [value, setValue] = useStore(key, defaultValue, assertFunction)
 ```
 - `key` : Any string.
-- `defaultValue` (optional) : The value affected by default to the store slot and returned by `useStore` when no previous save is found. This could be any JSON value (and [even more](#what-about-storing-non-json-values-like-dates-maps-and-simple-functions-)).
+- `defaultValue` (optional) : The value affected by default to the store and returned by `useStore` when no previous save is found. This could be any JSON value (and [even more](#what-about-storing-non-json-values-like-dates-maps-and-simple-functions-)).
 - `assertFunction` (optional) : On initial render, or when any of `useStore`'s parameters changes, the previous save passes through this function and has to return `true`. If it returns `false` or throws an error, `defaultValue` will be used and overwrite the save. This can be very handy, for example to prevent the hydration of `useStore` with ill-formed or outdated JSON. I would usually use [ajv](https://www.npmjs.com/package/ajv) in places like these.
 
 ### Identity and hook optimization
@@ -93,7 +93,7 @@ const [state, setState] = useStore('my-state', null, assert)
 
 ### The update function
 
-Like `useState`, the update function can take a value, or a _function_ taking the old value as an argument and returning the new one.
+Like `useState`, the update function can take a value, or a _function_ taking the old value as an argument and returning the new one. If you update your store to the same value as the current one (using `===` for the comparison), no update is actually triggered, thus preventing useless rerenders.
 
 ```javascript
 const [counter, setCounter] = useStore('counter')
