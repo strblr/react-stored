@@ -71,7 +71,7 @@ const [value, setValue] = useStore(key, defaultValue, assertFunction)
 ```
 - `key` : Any string.
 - `defaultValue` (optional) : The value affected by default to the store slot and returned by `useStore` when no previous save is found. This could be any JSON value (and [even more](#what-about-storing-non-json-values-like-dates-maps-and-simple-functions-)).
-- `assertFunction` (optional) : The first time `useStore` is called, or when any of its parameters changes, the previous save passes through this function and has to return `true`. If it returns `false` or throws an error, `defaultValue` will be used and overwrite the save. This can be very handy, for example to prevent the hydration of `useStore` with ill-formed or outdated JSON. I would usually use [ajv](https://www.npmjs.com/package/ajv) in places like these.
+- `assertFunction` (optional) : On initial render, or when any of `useStore`'s parameters changes, the previous save passes through this function and has to return `true`. If it returns `false` or throws an error, `defaultValue` will be used and overwrite the save. This can be very handy, for example to prevent the hydration of `useStore` with ill-formed or outdated JSON. I would usually use [ajv](https://www.npmjs.com/package/ajv) in places like these.
 
 ### Identity and hook optimization
 
