@@ -90,18 +90,21 @@ export const useStore = (key, init, assert) => {
     [key, init, assert, schema]
   )
 
-  const updateTrigger = useState({})[1]
+  const [, updateTrigger] = useState({})
 
-  useEffect(() => {
-    const updater = newValue => {
-      value.current = newValue
-      updateTrigger({})
-    }
-    addUpdater(key, updater)
-    return () => {
-      removeUpdater(key, updater)
-    }
-  }, [key, updateTrigger])
+  useEffect(
+    () => {
+      const updater = newValue => {
+        value.current = newValue
+        updateTrigger({})
+      }
+      addUpdater(key, updater)
+      return () => {
+        removeUpdater(key, updater)
+      }
+    },
+    [key]
+  )
 
   const globalUpdater = useCallback(
     newValue => {
