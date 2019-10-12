@@ -12,7 +12,7 @@ Ever dreamed of such of feature but couldn't come up with a 100% clean and satis
 5. with **configurable safety asserts** on deserialization and **default fallbacks**,
 6. with **no unnecessary** rerender, ever,
 7. with **simplicity** and **cool local / global configuration** options,
-8. with **zero dependency** (other than React of course),
+8. with **zero dependency** (other than [React](https://reactjs.org/) of course),
 8. with **very little** extra bundle size (+ 2.5 KB (4 times less than this very readme))
 
 ### Install
