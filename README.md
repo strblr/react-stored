@@ -131,8 +131,8 @@ addSchema('counter', 0, counter => counter < 100)
 // that any retrieved save is smaller than 100. If not, 0 will be used instead.
 
 addSchema(/coord-v\d+/, { x: 0, y: 4 })
-// Any invocation of 'coord-v1', 'coord-v43', 'coord-v9987', etc. will use the given
-// object as its default value.
+// Any invocation of 'coord-v1', 'coord-v43', 'coord-v9987', etc. will use the
+// given object as its default value.
 
 addSchema(/array-[0-9A-F]{2}/, [], array => {
   const ajv = new Ajv()
@@ -165,7 +165,7 @@ config({
   // IMPORTANT : A seemless prefix to ALL your keys, this has to be specific to your app :
   keyPrefix: '',
 
-  // The persistent storage to be used (could be replaced with sessionStorage) :
+  // The persistent storage to be used (could be replaced with sessionStorage or an in-memory alternative) :
   storage: window.localStorage,
 
   // When true, real-time auto-sync is extended across all browser tabs sharing the same origin :
@@ -241,9 +241,38 @@ Here is what's going on everytime you invoke `useStore` on a specific key :
 
 Things are easier with the assert function : if none could be found for a specific key (not locally nor globally), the functionality is simply discarded and hydration of previous saves goes without any checks.
 
-## What if you don't want your stores to be persistent ?
+## What if you _don't_ want your stores to be persistent ?
+
+Since you have **absolute control** over the actual storage being used in the background (see [`config`](#3--the-config-function)), you can use your own custom in-memory version (it just has to implement [`getItem`](https://developer.mozilla.org/en-US/docs/Web/API/Storage/getItem) and [`setItem`](https://developer.mozilla.org/en-US/docs/Web/API/Storage/setItem)). There are _plenty_ of npm packages with such alternatives. I personally like [memorystorage](https://www.npmjs.com/package/memorystorage) :
+
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { config } from 'react-stored'
+import MemoryStorage from 'memorystorage'
+import App from './App'
+
+config({
+  keyPrefix: 'whatever',
+  storage: new MemoryStorage()
+})
+
+ReactDOM.render(<App/>, document.getElementById('root'))
+```
 
 ## What if you are rendering server-side ?
+
+Dead simple. Again, you have to tweak your [`config`](#3--the-config-function) to use a universal version of `localStorage` (i.e. with in-memory fallback on server-side). [`local-storage-fallback`](https://www.npmjs.com/package/local-storage-fallback) does just that :
+
+```javascript
+import { config } from 'react-stored'
+import storage from 'local-storage-fallback'
+
+config({
+  keyPrefix: 'aa',
+  storage
+})
+```
 
 ## What about storing non-JSON values like dates, maps and simple functions ?
 
