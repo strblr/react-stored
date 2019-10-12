@@ -93,7 +93,7 @@ const [state, setState] = useStore('my-state', null, assert)
 
 ### The update function
 
-Like `useState`, the update function can take a value, or a _function_ taking the old value as an argument and returning the new one. If you update your store to the same value as the current one (using `===` for the comparison), no update is actually triggered, thus preventing useless rerenders.
+Like `useState`, the update function can take a value, or a _function_ taking the old value as an argument and returning the new one. If you update the store to the same value as the current one (using `===` for the comparison), no update is actually triggered, thus preventing useless rerenders.
 
 ```javascript
 const [counter, setCounter] = useStore('counter')
