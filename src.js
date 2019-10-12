@@ -60,10 +60,12 @@ export const useStore = (key, init, assert) => {
   const value = useRef()
 
   const schema = useMemo(
-    () => storeConfig.schemas.find(
-      schema => typeof schema.key === 'string' ?
-        schema.key === key : schema.key.test(key)
-    ),
+    () => storeConfig.schemas.find(schema => {
+      if(typeof schema.key === 'string')
+        return schema.key === key
+      else // regexp
+        return schema.key.test(key)
+    }),
     [key]
   )
 
