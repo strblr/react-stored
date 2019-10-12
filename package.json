@@ -1,6 +1,6 @@
 {
   "name": "react-stored",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "The ultimate useStore implementation. The power and simplicity of useState, but with persistence, global key-based synchronization without context, speed and reference optimization, safety checks, and other cool stuff.",
   "main": "index.js",
   "scripts": {
