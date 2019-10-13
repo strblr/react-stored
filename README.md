@@ -160,16 +160,20 @@ import ReactDOM from 'react-dom'
 import { config } from 'react-stored'
 import App from './App'
 
-// Below are the DEFAULT settings, it is pointless to set them explicitly to these values :
+// Below are the DEFAULT settings, it is pointless
+// to set them explicitly to these values :
 
 config({
-  // IMPORTANT : A seemless prefix to ALL your keys, this has to be specific to your app :
+  // IMPORTANT : A seemless prefix to ALL your keys,
+  // this has to be specific to your app :
   keyPrefix: '',
 
-  // The persistent storage to be used (could be replaced with sessionStorage or an in-memory alternative) :
+  // The storage to be used (could be replaced with
+  // an in-memory alternative, sessionStorage, a cookie-based storage, etc.) :
   storage: window.localStorage,
 
-  // When true, real-time auto-sync is extended across all browser tabs sharing the same origin :
+  // When true, real-time auto-sync is extended across
+  // all browser tabs sharing the same origin :
   crossTab: false,
 
   // A function that should transform JSON into a string :
