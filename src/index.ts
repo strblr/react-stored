@@ -90,8 +90,8 @@ const callUpdatersFromEvent = (event: StorageEvent) => {
 
 export const useStore = (
   key: string,
-  init: any,
-  assert: (_: any) => boolean
+  init?: any,
+  assert?: (_: any) => boolean
 ) => {
   const value = useRef<any>();
 
