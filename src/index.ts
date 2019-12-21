@@ -92,7 +92,7 @@ export const useStore = (
   key: string,
   init?: any,
   assert?: (_: any) => boolean
-) => {
+): [any, (_: any) => void] => {
   const value = useRef<any>();
 
   const schema = useMemo<Schema | undefined>(
