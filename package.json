@@ -2,10 +2,12 @@
   "name": "react-stored",
   "version": "1.3.5",
   "description": "The ultimate useStore implementation. The power and simplicity of useState, but with persistence, global key-based synchronization without context, speed and reference optimization, safety checks, and other cool stuff.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "push": "git add . && git commit -m 'mini update' && git push -u origin master",
-    "build": "babel src.js -o index.js"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -35,19 +37,13 @@
   },
   "homepage": "https://github.com/ostrebler/react-stored#readme",
   "devDependencies": {
-    "@babel/cli": "^7.6.2",
-    "@babel/core": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
-    "babel-preset-minify": "^0.5.1"
+    "@types/react": "^16.9.17",
+    "typescript": "^3.7.4"
   },
   "peerDependencies": {
     "react": "^16.8.x"
   },
-  "babel": {
-    "presets": [
-      "minify",
-      "@babel/preset-env"
-    ],
-    "comments": false
+  "dependencies": {
+    "react": "^16.12.0"
   }
 }
