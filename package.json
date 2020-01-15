@@ -38,6 +38,7 @@
   "homepage": "https://github.com/ostrebler/react-stored#readme",
   "devDependencies": {
     "@types/react": "^16.9.17",
+    "prettier": "^1.19.1",
     "typescript": "^3.7.4"
   },
   "peerDependencies": {

@@ -1,21 +1,33 @@
 import { useRef, useState, useMemo, useCallback, useEffect } from "react";
 
-/* Configurables */
+/* Types */
 
-interface Schema {
+export type Assert<T> = (value: T) => boolean;
+
+export type Schema<T = any> = {
   key: string | RegExp;
-  init: any;
-  assert(_: any): boolean;
-}
+  init?: T;
+  assert?: Assert<T>;
+};
 
-interface Config {
+export type Config = {
   keyPrefix: string;
   storage?: Storage;
   crossTab: boolean;
-  serialize(_: any): string;
-  deserialize(_: string): any;
+  serialize(value: any): string;
+  deserialize(raw: string): any;
   schemas: Schema[];
-}
+};
+
+export type Updater<T = any> = (value: T) => void;
+
+export type UpdaterMap = {
+  [key: string]: Updater[];
+};
+
+export type UseStoreReturn<T> = [T, Updater<T>];
+
+/* Configurables */
 
 const storeConfig: Config = {
   keyPrefix: "",
@@ -26,7 +38,7 @@ const storeConfig: Config = {
   schemas: []
 };
 
-export const config = (options: Config) => {
+export function config(options: Partial<Config>): void {
   if (
     options.hasOwnProperty("crossTab") &&
     typeof window !== "undefined" &&
@@ -37,42 +49,36 @@ export const config = (options: Config) => {
       callUpdatersFromEvent as EventListener
     );
   Object.assign(storeConfig, options);
-};
+}
 
-export const addSchema = (
+export function addSchema<T = any>(
   key: string | RegExp,
-  init: any,
-  assert: (_: any) => boolean
-) => {
+  init?: T,
+  assert?: Assert<T>
+): void {
   storeConfig.schemas.push({ key, init, assert });
-};
+}
 
 /* Update Events */
 
-type Updater = (_: any) => void;
+const storeUpdaters: UpdaterMap = Object.create(null);
 
-interface UpdaterMap {
-  [_: string]: Updater[];
+function addUpdater<T>(key: string, updater: Updater<T>): void {
+  if (key in storeUpdaters) storeUpdaters[key].push(updater);
+  else storeUpdaters[key] = [updater];
 }
 
-const storeUpdaters: UpdaterMap = {};
-
-const addUpdater = (key: string, updater: Updater) => {
-  if (storeUpdaters.hasOwnProperty(key)) storeUpdaters[key].push(updater);
-  else storeUpdaters[key] = [updater];
-};
-
-const removeUpdater = (key: string, updater: Updater) => {
-  if (storeUpdaters.hasOwnProperty(key)) {
+function removeUpdater<T>(key: string, updater: Updater<T>): void {
+  if (key in storeUpdaters) {
     const index = storeUpdaters[key].indexOf(updater);
     index !== -1 && storeUpdaters[key].splice(index, 1);
   }
-};
+}
 
-const callUpdaters = (key: string, value: Updater) => {
-  if (storeUpdaters.hasOwnProperty(key))
+function callUpdaters<T>(key: string, value: T): void {
+  if (key in storeUpdaters)
     for (const updater of storeUpdaters[key]) updater(value);
-};
+}
 
 const callUpdatersFromEvent = (event: StorageEvent) => {
   event.storageArea === storeConfig.storage &&
@@ -88,14 +94,14 @@ const callUpdatersFromEvent = (event: StorageEvent) => {
 
 /* React Stuff */
 
-export const useStore = (
+export function useStore<T = any>(
   key: string,
-  init?: any,
-  assert?: (_: any) => boolean
-): [any, (_: any) => void] => {
-  const value = useRef<any>();
+  init?: T,
+  assert?: Assert<T>
+): UseStoreReturn<T> {
+  const value = useRef<T>();
 
-  const schema = useMemo<Schema | undefined>(
+  const schema = useMemo<Schema<T> | undefined>(
     () =>
       storeConfig.schemas.find(schema => {
         if (typeof schema.key === "string") return schema.key === key;
@@ -116,16 +122,22 @@ export const useStore = (
         const serialized = storeConfig.storage.getItem(
           `${storeConfig.keyPrefix}${key}`
         );
-        if (serialized === null) throw new Error();
-        const stored = storeConfig.deserialize(serialized);
-        if (finalAssert && !finalAssert(stored)) throw new Error();
+        if (serialized === null) {
+          // noinspection ExceptionCaughtLocallyJS
+          throw new Error();
+        }
+        const stored: T = storeConfig.deserialize(serialized);
+        if (finalAssert && !finalAssert(stored)) {
+          // noinspection ExceptionCaughtLocallyJS
+          throw new Error();
+        }
         value.current = stored;
       } catch (err) {
         storeConfig.storage.setItem(
           `${storeConfig.keyPrefix}${key}`,
           storeConfig.serialize(finalInit)
         );
-        value.current = finalInit;
+        value.current = finalInit as T;
       }
     }
   }, [key, init, assert, schema]);
@@ -133,7 +145,7 @@ export const useStore = (
   const updateTrigger = useState({})[1];
 
   useEffect(() => {
-    const updater = (newValue: any) => {
+    const updater: Updater<T> = newValue => {
       value.current = newValue;
       updateTrigger({});
     };
@@ -143,7 +155,7 @@ export const useStore = (
     };
   }, [key]);
 
-  const globalUpdater = useCallback(
+  const globalUpdater = useCallback<Updater<T>>(
     newValue => {
       if (typeof newValue === "function") newValue = newValue(value.current);
       if (storeConfig.storage && newValue !== value.current) {
@@ -157,14 +169,14 @@ export const useStore = (
     [key]
   );
 
-  return [value.current, globalUpdater];
-};
+  return [value.current as T, globalUpdater];
+}
 
-export const readStore = (key: string) => {
+export function readStore<T = any>(key: string): T | undefined {
   if (storeConfig.storage) {
     const serialized = storeConfig.storage.getItem(
       `${storeConfig.keyPrefix}${key}`
     );
     if (serialized !== null) return storeConfig.deserialize(serialized);
   }
-};
+}
