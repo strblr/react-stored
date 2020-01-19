@@ -19,11 +19,13 @@ export type Config = {
   schemas: Schema[];
 };
 
-export type Updater<T = any> = (value: T) => void;
+export type InternalUpdater<T = any> = (value: T) => void;
 
-export type UpdaterMap = {
-  [key: string]: Updater[];
-};
+export type UpdaterMap = Record<string, InternalUpdater[]>;
+
+export type Updater<T> =
+  | ((value: T) => void)
+  | ((factory: (value: T) => T) => void);
 
 export type UseStoreReturn<T> = [T, Updater<T>];
 
@@ -63,12 +65,12 @@ export function addSchema<T = any>(
 
 const storeUpdaters: UpdaterMap = Object.create(null);
 
-function addUpdater<T>(key: string, updater: Updater<T>): void {
+function addUpdater<T>(key: string, updater: InternalUpdater<T>): void {
   if (key in storeUpdaters) storeUpdaters[key].push(updater);
   else storeUpdaters[key] = [updater];
 }
 
-function removeUpdater<T>(key: string, updater: Updater<T>): void {
+function removeUpdater<T>(key: string, updater: InternalUpdater<T>): void {
   if (key in storeUpdaters) {
     const index = storeUpdaters[key].indexOf(updater);
     index !== -1 && storeUpdaters[key].splice(index, 1);
@@ -145,7 +147,7 @@ export function useStore<T = any>(
   const updateTrigger = useState({})[1];
 
   useEffect(() => {
-    const updater: Updater<T> = newValue => {
+    const updater = (newValue: T) => {
       value.current = newValue;
       updateTrigger({});
     };
@@ -156,8 +158,8 @@ export function useStore<T = any>(
   }, [key]);
 
   const globalUpdater = useCallback<Updater<T>>(
-    newValue => {
-      if (typeof newValue === "function") newValue = newValue(value.current);
+    (newValue: T | ((value: T) => T)) => {
+      if (newValue instanceof Function) newValue = newValue(value.current as T);
       if (storeConfig.storage && newValue !== value.current) {
         storeConfig.storage.setItem(
           `${storeConfig.keyPrefix}${key}`,
