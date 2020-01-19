@@ -23,9 +23,7 @@ export type InternalUpdater<T = any> = (value: T) => void;
 
 export type UpdaterMap = Record<string, InternalUpdater[]>;
 
-export type Updater<T> =
-  | ((value: T) => void)
-  | ((factory: (value: T) => T) => void);
+export type Updater<T> = (valueOrFactory: T | ((value: T) => T)) => void;
 
 export type UseStoreReturn<T> = [T, Updater<T>];
 
