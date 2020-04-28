@@ -41,6 +41,12 @@ export function createStore(options: Partial<Options>) {
     setOptions(options: Partial<Options>) {
       Object.assign(config, options);
     },
+    readStore<T = any>(key: Key) {
+      const serialized = config.storage.getItem(`${config.keyPrefix}${key}`);
+      return serialized === null
+        ? undefined
+        : (config.deserialize(serialized) as T);
+    },
     useStore<T = any>(key: Key) {
       const schema = useMemo<Schema<T>>(() => {
         const schema = config.schemas.find(schema =>
