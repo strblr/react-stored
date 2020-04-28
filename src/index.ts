@@ -6,9 +6,9 @@ export type Key = string;
 
 export type KeyPattern = Key | RegExp;
 
-export type Asserter<T> = (value: T) => boolean;
+export type Asserter<T = any> = (value: T) => boolean;
 
-export type Schema<T> = {
+export type Schema<T = any> = {
   key: KeyPattern;
   init: T;
   assert: Asserter<T>;
@@ -19,14 +19,14 @@ export type Options = {
   keyPrefix: string;
   serialize(value: any): string;
   deserialize(raw: string): any;
-  schemas: Array<Schema<any>>;
+  schemas: Array<Schema>;
 };
 
 export type Trigger = () => void;
 
 export type TriggerMap = Record<Key, Array<Trigger>>;
 
-export type Updater<T> = (value: T | ((value: T) => T)) => void;
+export type Updater<T = any> = (value: T | ((value: T) => T)) => void;
 
 // Main factory
 
@@ -35,13 +35,13 @@ export function createStore(options: Partial<Options>) {
   const triggers: TriggerMap = Object.create(null);
 
   return {
-    addSchema<T>(schema: Schema<T>) {
+    addSchema<T = any>(schema: Schema<T>) {
       config.schemas.push(schema);
     },
     setOptions(options: Partial<Options>) {
       Object.assign(config, options);
     },
-    useStore<T>(key: Key) {
+    useStore<T = any>(key: Key) {
       const schema = useMemo<Schema<T>>(() => {
         const schema = config.schemas.find(schema =>
           typeof schema.key === "string"
