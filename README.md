@@ -1,4 +1,7 @@
-# react-stored
+# /!\ Important : This doc is relevant for up to version 1.4.6. New doc coming soon.
+
+## react-stored
+
 The ultimate `useStore` implementation. The power and simplicity of `useState`, but with persistence, global key-based synchronization without context, speed and reference optimization, safety checks, and other cool stuff.
 
 Ever dreamed of such of feature but couldn't come up with a 100% satisfying solution ? Well, this package is for you.
@@ -27,33 +30,34 @@ yarn add react-stored
 # Quick demo
 
 Say you have the two following components far away from one another in the tree :
+
 ```javascript
-import React from 'react'
-import { useStore } from 'react-stored'
+import React from "react";
+import { useStore } from "react-stored";
 
 function FirstComponent() {
-  const [counter, setCounter] = useStore('counter', 0)
-  return <>
-    <h1>Counter : {counter}</h1>
-    <button onClick={() => setCounter(counter + 1)}>
-      Increment
-    </button>
-  </>
+  const [counter, setCounter] = useStore("counter", 0);
+  return (
+    <>
+      <h1>Counter : {counter}</h1>
+      <button onClick={() => setCounter(counter + 1)}>Increment</button>
+    </>
+  );
 }
 ```
 
 ```javascript
-import React from 'react'
-import { useStore } from 'react-stored'
+import React from "react";
+import { useStore } from "react-stored";
 
 function SecondComponent() {
-  const [counter, setCounter] = useStore('counter', 0)
-  return <>
-    <h1>Counter : {counter}</h1>
-    <button onClick={() => setCounter(0)}>
-      Reset
-    </button>
-  </>
+  const [counter, setCounter] = useStore("counter", 0);
+  return (
+    <>
+      <h1>Counter : {counter}</h1>
+      <button onClick={() => setCounter(0)}>Reset</button>
+    </>
+  );
 }
 ```
 
@@ -70,8 +74,9 @@ This is the cornerstone of this package. It 'connects' you to a specific store, 
 It can take up to 3 arguments (**only the key is required**) :
 
 ```javascript
-const [value, setValue] = useStore(key, defaultValue, assertFunction)
+const [value, setValue] = useStore(key, defaultValue, assertFunction);
 ```
+
 - `key` : Any string.
 - `defaultValue` (optional) : The value affected by default to the store and returned by `useStore` when no previous save is found. This could be any JSON value (and [even more](#what-about-storing-non-json-values-like-dates-maps-and-simple-functions-)).
 - `assertFunction` (optional) : On initial render, [or when any of `useStore`'s parameters changes](#identity-and-hook-optimization), the previous save passes through this function and has to return `true`. If it returns `false` or throws an error, `defaultValue` will be used and overwrite the save. This can be very handy, for example to prevent the hydration of `useStore` with ill-formed or outdated JSON. I would usually use [ajv](https://www.npmjs.com/package/ajv) in places like these.
@@ -81,15 +86,17 @@ const [value, setValue] = useStore(key, defaultValue, assertFunction)
 Just like most hooks, `useStore` relies on **object identity** to optimize internal recomputations. If your `defaultValue` is **an object or an array**, please use [`useRef`](https://reactjs.org/docs/hooks-reference.html#useref) or [`useMemo`](https://reactjs.org/docs/hooks-reference.html#usememo) to keep the same reference as long as possible :
 
 ```javascript
-const init = useMemo(() => ({ x: props.x, y: 0 }), [props.x])
-const [coord, setCoord] = useStore('coord', init)
+const init = useMemo(() => ({ x: props.x, y: 0 }), [props.x]);
+const [coord, setCoord] = useStore("coord", init);
 ```
 
 Similarly, use [`useCallback`](https://reactjs.org/docs/hooks-reference.html#usecallback) for the assert function :
 
 ```javascript
-const assert = useCallback(state => ajv.validate(props.model, state), [props.model])
-const [state, setState] = useStore('my-state', null, assert)
+const assert = useCallback(state => ajv.validate(props.model, state), [
+  props.model
+]);
+const [state, setState] = useStore("my-state", null, assert);
 ```
 
 **Better (!)** : Whenever possible, set your `defaultValue` and `assertFunction` _outside_ the render tree using [`addSchema`](#2--the-addschema-function). This way, you don't have to worry about reference optimization. Plus, the separation between configuration and usage makes your code cleaner.
@@ -121,31 +128,31 @@ This configuration function allows you to set _default_- default values and _def
 It takes the same arguments as `useStore` except the key can be a regexp. If it is, then all keys matching the regexp will use the given configuration.
 
 ```javascript
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { addSchema } from 'react-stored'
-import Ajv from 'ajv'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom";
+import { addSchema } from "react-stored";
+import Ajv from "ajv";
+import App from "./App";
 
-addSchema('counter', 0, counter => counter < 100)
+addSchema("counter", 0, counter => counter < 100);
 // Any invocation of 'counter' will now use 0 as its default value, and ensure
 // that any retrieved save is smaller than 100. If not, 0 will be used instead.
 
-addSchema(/coord-v\d+/, { x: 0, y: 4 })
+addSchema(/coord-v\d+/, { x: 0, y: 4 });
 // Any invocation of 'coord-v1', 'coord-v43', 'coord-v9987', etc. will use the
 // given object as its default value.
 
 const isValidArray = new Ajv().compile({
-  type: 'array',
-  items: { type: 'string' }
-})
+  type: "array",
+  items: { type: "string" }
+});
 
-addSchema(/array-[0-9A-F]{2}/, [], isValidArray)
+addSchema(/array-[0-9A-F]{2}/, [], isValidArray);
 // Any invocation from 'array-00' to 'array-FF' will be initialized with an
 // empty array. Any previous save should be an array of strings, otherwise
 // it will be overwritten with an empty array.
 
-ReactDOM.render(<App/>, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 ## 3- The `config` function
@@ -153,10 +160,10 @@ ReactDOM.render(<App/>, document.getElementById('root'))
 With this function, you can tweak some general stuff. It has to be called outside of the React structure, before any `useStore` call, so usually somewhere in your `index.js` before your `ReactDOM.render`.
 
 ```javascript
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { config } from 'react-stored'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom";
+import { config } from "react-stored";
+import App from "./App";
 
 // Below are the DEFAULT settings, it is pointless
 // to set them explicitly to these values :
@@ -164,7 +171,7 @@ import App from './App'
 config({
   // IMPORTANT : A seemless prefix to ALL your keys, this has to be specific
   // to your app :
-  keyPrefix: '',
+  keyPrefix: "",
 
   // The storage to be used (could be replaced with an in-memory alternative,
   // sessionStorage, a cookie-based storage, etc. See FAQ) :
@@ -179,9 +186,9 @@ config({
 
   // A function that should transform a string into JSON :
   deserialize: JSON.parse
-})
+});
 
-ReactDOM.render(<App/>, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 ### `keyPrefix` is important
@@ -195,16 +202,16 @@ Also, imagine several customers already tested your app and have _their local co
 Here is typically what my `index.js` looks like :
 
 ```javascript
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { config } from 'react-stored'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom";
+import { config } from "react-stored";
+import App from "./App";
 
 config({
-  keyPrefix: 'my-app-v2.4.1-'
-})
+  keyPrefix: "my-app-v2.4.1-"
+});
 
-ReactDOM.render(<App/>, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 ### Schema definition with `config`
@@ -213,10 +220,10 @@ You can also replace all your [`addSchema`](#2--the-addschema-function) calls wi
 
 ```javascript
 config({
-  keyPrefix: 'my-app-v4',
+  keyPrefix: "my-app-v4",
   schemas: [
     {
-      key: 'counter',
+      key: "counter",
       init: 0,
       assert: counter => counter < 100
     },
@@ -225,7 +232,7 @@ config({
       init: { x: 1, y: 0 }
     }
   ]
-})
+});
 ```
 
 ## 4- The `readStore` function
@@ -237,6 +244,7 @@ This gives you the possibility to passively read the content of your store outsi
 ## What if no default value or assert function is set ?
 
 Here is what's going on everytime you invoke `useStore` on a specific key :
+
 - If a _previous save_ is found in the storage for that key, it is used. If not :
 - If a default value is set _locally_ (as an argument of `useStore`), it is used. If not :
 - If a default value is set _globally_ (as an argument of `addSchema`), it is used. If not :
@@ -249,13 +257,13 @@ Things are easier with the assert function : if none could be found for a specif
 Since you have **absolute control** over the actual storage being used in the background (see [`config`](#3--the-config-function)), you can use your own custom in-memory version (it just has to implement [`getItem`](https://developer.mozilla.org/en-US/docs/Web/API/Storage/getItem) and [`setItem`](https://developer.mozilla.org/en-US/docs/Web/API/Storage/setItem)). There are _plenty_ of npm packages with such alternatives. I personally like [memorystorage](https://www.npmjs.com/package/memorystorage) :
 
 ```javascript
-import { config } from 'react-stored'
-import MemoryStorage from 'memorystorage'
+import { config } from "react-stored";
+import MemoryStorage from "memorystorage";
 
 config({
-  keyPrefix: 'whatever',
+  keyPrefix: "whatever",
   storage: new MemoryStorage()
-})
+});
 ```
 
 ## What if you are rendering server-side ?
@@ -263,13 +271,14 @@ config({
 Dead simple. Again, you have to tweak your [`config`](#3--the-config-function) to use a universal version of `localStorage` (i.e. with in-memory fallback on server-side).
 
 ```javascript
-import { config } from 'react-stored'
-import MemoryStorage from 'memorystorage'
+import { config } from "react-stored";
+import MemoryStorage from "memorystorage";
 
 config({
-  keyPrefix: 'whatever',
-  storage: typeof window === 'undefined' ? new MemoryStorage() : window.localStorage
-})
+  keyPrefix: "whatever",
+  storage:
+    typeof window === "undefined" ? new MemoryStorage() : window.localStorage
+});
 ```
 
 ## What about storing non-JSON values like dates, maps and simple functions ?
@@ -277,13 +286,13 @@ config({
 This is possible with a careful use of [serialize-javascript](https://www.npmjs.com/package/serialize-javascript), [`eval`](https://javascriptweblog.wordpress.com/2010/04/19/how-evil-is-eval/) and a bit of configuration :
 
 ```javascript
-import { config } from 'react-stored'
-import serialize from 'serialize-javascript'
+import { config } from "react-stored";
+import serialize from "serialize-javascript";
 
 config({
   serialize,
   deserialize: str => eval(`(${str})`)
-})
+});
 ```
 
 # About

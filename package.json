@@ -1,6 +1,6 @@
 {
   "name": "react-stored",
-  "version": "1.4.6",
+  "version": "2.0.0",
   "description": "The ultimate useStore implementation. The power and simplicity of useState, but with persistence, global key-based synchronization without context, speed and reference optimization, safety checks, and other cool stuff.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -38,13 +38,15 @@
   "homepage": "https://github.com/ostrebler/react-stored#readme",
   "devDependencies": {
     "@types/react": "^16.9.17",
-    "prettier": "^1.19.1",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "react": "^16.13.1",
     "typescript": "^3.7.4"
   },
   "peerDependencies": {
-    "react": "^16.8.x"
-  },
-  "dependencies": {
-    "react": "^16.12.0"
+    "react": ">=16.8"
   }
 }
