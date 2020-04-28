@@ -47,7 +47,7 @@ export function createStore(options: Partial<Options>) {
         ? undefined
         : (config.deserialize(serialized) as T);
     },
-    useStore<T = any>(key: Key) {
+    useStore<T = any>(key: Key): [T, Updater<T>] {
       const schema = useMemo<Schema<T>>(() => {
         const schema = config.schemas.find(schema =>
           typeof schema.key === "string"
@@ -77,9 +77,9 @@ export function createStore(options: Partial<Options>) {
       }, [key, schema, dirty]);
 
       useLayoutEffect(() => {
-        const updater = () => setDirty({});
-        addTrigger(triggers, key, updater);
-        return () => removeTrigger(triggers, key, updater);
+        const trigger = () => setDirty({});
+        addTrigger(triggers, key, trigger);
+        return () => removeTrigger(triggers, key, trigger);
       }, [key]);
 
       const updater: Updater<T> = nextValue => {
@@ -102,7 +102,7 @@ export function createStore(options: Partial<Options>) {
         updaterRef.current(nextValue)
       );
 
-      return [value, immutableUpdaterRef.current] as [T, Updater<T>];
+      return [value, immutableUpdaterRef.current];
     }
   };
 }
